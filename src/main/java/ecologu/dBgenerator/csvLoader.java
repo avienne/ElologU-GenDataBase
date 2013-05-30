@@ -21,7 +21,7 @@ import java.sql.SQLException;
  */
 public class csvLoader
 {
-    private static final String SQL_INSERT = "INSERT INTO ${table}(${keys}) VALUES(${values})";
+    private static final String SQL_INSERT = "INSERT INTO ${table} VALUES(${values})";
     private static final String TABLE_REGEX = "\\$\\{table\\}";
     private static final String KEYS_REGEX = "\\$\\{keys\\}";
     private static final String VALUES_REGEX = "\\$\\{values\\}";
@@ -83,7 +83,7 @@ public class csvLoader
                 .length() - 1);
  
         String query = SQL_INSERT.replaceFirst(TABLE_REGEX, tableName);
-        query = query.replaceFirst(KEYS_REGEX, StringUtils.join(headerRow, ","));
+        //query = query.replaceFirst(KEYS_REGEX, StringUtils.join(headerRow, ","));
         query = query.replaceFirst(VALUES_REGEX, questionmarks);
  
         System.out.println("Query: " + query);
@@ -95,7 +95,7 @@ public class csvLoader
         {
             con = this.connection;
             con.setAutoCommit(false);
-            ps = con.prepareStatement(query);
+            ps = con.prepareStatement("INSERT INTO ELECTRICITE VALUES(?,?)");
  
             if(truncateBeforeLoad)
             {
@@ -108,30 +108,14 @@ public class csvLoader
             Date date = null;
             while((nextLine = csvReader.readNext()) != null)
             {
-                if(nextLine != null)
-                {
-                    int index = 1;
-                    for(String string : nextLine)
-                    {
-                        date = DateUtil.convertToDate(string);
-                        if(date != null)
-                        {
-                            ps.setDate(index++, new java.sql.Date(date.getTime()));
-                        }
-                        else
-                        {
-                            ps.setString(index++, string);
-                        }
-                    }
-                    ps.addBatch();
-                }
-                if(++count % batchSize == 0)
-                {
-                    ps.executeBatch();
-                }
+                
+                ps.setString(1,nextLine[0]);
+                ps.setString(2,nextLine[1]);
+                ps.execute();
+                con.commit();
             }
-            ps.executeBatch(); // insert remaining records
-            con.commit();
+            
+            
         }
         catch(SQLException e)
         {
@@ -153,7 +137,7 @@ public class csvLoader
             }
             if(con != null)
             {
-                con.close();
+              con.close();
             }
  
             csvReader.close();

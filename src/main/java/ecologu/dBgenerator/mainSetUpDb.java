@@ -10,6 +10,8 @@ public class mainSetUpDb{
 		System.out.println("Db Creator class loaded");
 		dbc.setUpDb();
 		System.out.println("Db Creator class Ended");
+		
+
 
 	}
 }

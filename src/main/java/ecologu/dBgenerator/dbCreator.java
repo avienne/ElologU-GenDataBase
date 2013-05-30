@@ -59,8 +59,8 @@ public class dbCreator
                 try
                 {
                     s.execute("CREATE TABLE APP." + (String)this.tables.get(i)
-                        + "(heure date not null primary key,"
-                            + "consommation double)");
+                        + "(heure char(40) not null primary key,"
+                            + "consommation char(10))");
                 }
                 catch(SQLException sqle)
                 {
@@ -71,45 +71,30 @@ public class dbCreator
                 }
                 System.out.println("Création de la table '" +  this.tables.get(i) + "'");
             }
+
+
+
             // Ajouter ICI le code pour peupler la base de consommation d'électricité 
-            
-            
-            
+            try{
+                csvLoader loader = new csvLoader(con);
+                loader.setSeprator(';');
+                loader.loadCSV("./dataelec.csv","ELECTRICITE",true);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
             try
             {
-                System.out.println("Affichage des tables");
-                ResultSet st = s.executeQuery("SELECT tablename "
-                    + "FROM sys.systables "
-                    + "WHERE tablename NOT LIKE 'SYS%'");
-                while(st.next())
+                if(con != null)
                 {
-                    System.out.println(st.getString("TABLENAME"));
-                }
-                if(s != null)
-                {
-                    s.close();
-                    s = null;
+                    con.close();
+                    con = null;
                 }
             }
             catch(SQLException sqle)
             {
                 printSQLException(sqle);
             }
-            finally
-            {
-                try
-                {
-                    if(con != null)
-                    {
-                        con.close();
-                        con = null;
-                    }
-                }
-                catch(SQLException sqle)
-                {
-                    printSQLException(sqle);
-                }
-            }
+            
         }
     }
     
