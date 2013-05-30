@@ -72,6 +72,18 @@ public class dbCreator
                 System.out.println("Création de la table '" +  this.tables.get(i) + "'");
             }
 
+            try{
+                s.execute( "CREATE TABLE APP.configurations "
+                            + "(mode char(10) not null,"
+                            + "attribut char(20) not null,"
+                            + "valeur varchar(60),"
+                            + "primary key(mode,attribut))");
+                con.commit();
+            }catch(SQLException sqle)
+            {
+                    printSQLException(sqle);
+            }
+
 
 
             // Ajouter ICI le code pour peupler la base de consommation d'électricité 
