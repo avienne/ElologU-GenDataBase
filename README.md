@@ -13,5 +13,5 @@ mvn clean install assembly:single
 java -jar dbGenerator-1.0-SNAPSHOT-jar-with-dependencies.jar
 
 
-Il se connecte alors à la javadb via derby et crée la base Ecolog_U et la peuple (enfin presque).
+Il se connecte alors à la javadb via derby et crée la base Ecolog_U et la peuple.
 
