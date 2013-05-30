@@ -5,15 +5,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.util.Date;
 import org.apache.commons.lang3.StringUtils;
 import au.com.bytecode.opencsv.CSVReader;
 import java.io.IOException;
 import java.sql.SQLException;
-
-
-
-
 
 /**
  * 
@@ -23,7 +18,7 @@ public class csvLoader
 {
     private static final String SQL_INSERT = "INSERT INTO ${table} VALUES(${values})";
     private static final String TABLE_REGEX = "\\$\\{table\\}";
-    private static final String KEYS_REGEX = "\\$\\{keys\\}";
+    //private static final String KEYS_REGEX = "\\$\\{keys\\}";
     private static final String VALUES_REGEX = "\\$\\{values\\}";
  
     private Connection connection;
@@ -95,27 +90,29 @@ public class csvLoader
         {
             con = this.connection;
             con.setAutoCommit(false);
-            ps = con.prepareStatement("INSERT INTO ELECTRICITE VALUES(?,?)");
- 
+            //ps = con.prepareStatement("INSERT INTO ELECTRICITE VALUES(?,?)");
+            ps = con.prepareStatement(query); //c'est mieux comme ça ;)
             if(truncateBeforeLoad)
             {
                 //delete data from table before loading csv
                 con.createStatement().execute("DELETE FROM " + tableName);
             }
  
-            final int batchSize = 1000;
-            int count = 0;
-            Date date = null;
+            //final int batchSize = 1000;
+            //int count = 0;
+            //Date date = null;
             while((nextLine = csvReader.readNext()) != null)
             {
                 
-                ps.setString(1,nextLine[0]);
-                ps.setString(2,nextLine[1]);
+                //ps.setString(1,nextLine[0]);
+                //ps.setString(2,nextLine[1]);
+                for(int i=0; i<headerRow.length; i++)
+                {
+                    ps.setString(i+1, nextLine[i]);
+                }
                 ps.execute();
                 con.commit();
             }
-            
-            
         }
         catch(SQLException e)
         {
@@ -134,11 +131,17 @@ public class csvLoader
             if(ps != null)
             {
                 ps.close();
+                ps = null;
             }
-            if(con != null)
+            /* je pense que c'est une mauvaise idée de fermer la connexion dans le csvLoader car
+             * ce n'est pas lui qui l'ouvre. On ouvre une connexion, on appelle le csvLoader
+             * et on ferme la connexion après cet appel.
+            */
+            /*if(con != null)
             {
               con.close();
-            }
+              con = null;
+            }*/
  
             csvReader.close();
         }

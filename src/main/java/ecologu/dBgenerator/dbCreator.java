@@ -2,6 +2,7 @@ package ecologu.dBgenerator;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -16,10 +17,10 @@ import java.util.Properties;
 
 public class dbCreator 
 {
-    private String framework = "derbyclient"; //"embedded";
-    private String driver = "org.apache.derby.jdbc.ClientDriver"; //"org.apache.derby.jdbc.EmbeddedDriver";
-    private String protocol = "jdbc:derby://localhost:1527/"; //"jdbc:derby:";
-    private String DBname = "EcologU_DB";
+    private String framework = "derbyclient";
+    private String driver = "org.apache.derby.jdbc.ClientDriver";
+    private String protocol = "jdbc:derby://localhost:1527/";
+    private String DBname = "EcologU_DB2";
     private ArrayList<String> tables = new ArrayList<String>()
     {
         {
@@ -36,10 +37,9 @@ public class dbCreator
         this.loadDriver();
         Connection con = null;
         Statement s = null;
-        
+
         try
         {
-            //uncomment to add a user and an authenticated connection
             Properties props = new Properties();
             props.put("user", "root");
             props.put("password", "root");
@@ -78,13 +78,14 @@ public class dbCreator
                             + "attribut char(20) not null,"
                             + "valeur varchar(60),"
                             + "primary key(mode,attribut))");
-                con.commit();
+                //con.commit();
             }catch(SQLException sqle)
             {
+                if(!(sqle.getErrorCode() == -1 && "X0Y32".equals(sqle.getSQLState())))
+                {
                     printSQLException(sqle);
+                }
             }
-
-
 
             // Ajouter ICI le code pour peupler la base de consommation d'électricité 
             try{
@@ -94,8 +95,47 @@ public class dbCreator
             }catch (Exception e){
                 e.printStackTrace();
             }
+            // Remplissage de la table configurations
+            try{
+                csvLoader loader = new csvLoader(con);
+                loader.setSeprator(';');
+                loader.loadCSV("./dataConfig.csv","CONFIGURATIONS",true);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            
+            // Décommenter pour afficher le contenu des tables ELECTRICITE et CONFIGURATIONS
+            /*
             try
             {
+                ResultSet rs = s.executeQuery("SELECT * FROM APP.ELECTRICITE");
+                while(rs.next())
+                {
+                    System.out.println("[ "+rs.getString("heure")+", "
+                            + rs.getString("consommation") + " ]");
+                }
+                rs = s.executeQuery("SELECT * FROM APP.CONFIGURATIONS");
+                while(rs.next())
+                {
+                    System.out.println("[ "+rs.getString("mode")+", "
+                            + rs.getString("attribut") + ", "
+                            + rs.getString("valeur") + " ]");
+                }
+                if(rs != null)
+                {
+                    rs.close();
+                    rs = null;
+                }
+            }
+            catch(SQLException sqle) {printSQLException(sqle);}
+            */
+            try
+            {
+                if(s != null)
+                {
+                    s.close();
+                    s = null;
+                }
                 if(con != null)
                 {
                     con.close();
@@ -105,12 +145,10 @@ public class dbCreator
             catch(SQLException sqle)
             {
                 printSQLException(sqle);
-            }
-            
+            }   
         }
     }
     
-
     private void loadDriver()
     {
         try
@@ -156,4 +194,3 @@ public class dbCreator
         }
     }
 }
-
