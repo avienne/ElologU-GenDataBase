@@ -31,7 +31,6 @@ public class dbCreator
             add("electricite");
         }
     };
-    //private csvLoader csv; 
     
     public void setUpDb (){
         this.loadDriver();
@@ -45,6 +44,7 @@ public class dbCreator
             props.put("password", "root");
             System.out.println("Création de la base '" + DBname + "'");
             con = DriverManager.getConnection(protocol + DBname + ";create=true;", props);
+            con.setAutoCommit(false);
             s = con.createStatement();
             s.execute("SET SCHEMA APP");
         }
@@ -61,6 +61,7 @@ public class dbCreator
                     s.execute("CREATE TABLE APP." + (String)this.tables.get(i)
                         + "(heure char(40) not null primary key,"
                             + "consommation char(10))");
+                    con.commit();
                 }
                 catch(SQLException sqle)
                 {
@@ -73,12 +74,12 @@ public class dbCreator
             }
 
             try{
-                s.execute( "CREATE TABLE APP.configurations "
-                            + "(mode char(10) not null,"
-                            + "attribut char(20) not null,"
+                s.execute("CREATE TABLE APP.configurations "
+                            + "(mode varchar(8) not null,"
+                            + "attribut varchar(15) not null,"
                             + "valeur varchar(60),"
-                            + "primary key(mode,attribut))");
-                //con.commit();
+                            + "primary key(mode, attribut))");
+                con.commit();
             }catch(SQLException sqle)
             {
                 if(!(sqle.getErrorCode() == -1 && "X0Y32".equals(sqle.getSQLState())))
@@ -86,20 +87,36 @@ public class dbCreator
                     printSQLException(sqle);
                 }
             }
-
+            
+            try{
+                s.execute("CREATE TABLE APP.notifications "
+                            + "(id int not null primary key "
+                            + "GENERATED ALWAYS AS IDENTITY"
+                            + "(START WITH 1, INCREMENT BY 1),"
+                            + "gravite varchar(10) not null,"
+                            + "heure char(22) not null,"
+                            + "action varchar(20) not null,"
+                            + "equipement varchar(100) not null)");
+                con.commit();
+            }catch(SQLException sqle)
+            {
+                if(!(sqle.getErrorCode() == -1 && "X0Y32".equals(sqle.getSQLState())))
+                {
+                    printSQLException(sqle);
+                }
+            }
+            
+            csvLoader loader = new csvLoader(con);
             // Ajouter ICI le code pour peupler la base de consommation d'électricité 
             try{
-                csvLoader loader = new csvLoader(con);
-                loader.setSeprator(';');
-                loader.loadCSV("./dataelec.csv","ELECTRICITE",true);
+                
+                loader.loadCSV("./dataelec.csv", "ELECTRICITE", true);
             }catch (Exception e){
                 e.printStackTrace();
             }
             // Remplissage de la table configurations
             try{
-                csvLoader loader = new csvLoader(con);
-                loader.setSeprator(';');
-                loader.loadCSV("./dataConfig.csv","CONFIGURATIONS",true);
+                loader.loadCSV("./dataConfig.csv", "CONFIGURATIONS", true);
             }catch (Exception e){
                 e.printStackTrace();
             }

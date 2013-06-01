@@ -1,0 +1,5 @@
+gravite;heure;action;equipement
+INFO;samedi 1 juin 2013 14:00;allumage lampes; lampes salle Vitrine
+INFO;samedi 1 juin 2013 15:50; extinction lampe; lampes amphi Chappe
+WARNIG;lundi 3 juin 2013 09:36;baisse chauffage;température ambiante salle TD A
+SEVERE;lundi 3 juin 2013 15:01;coupure chauffage;fenetre ouverte salle Projet B

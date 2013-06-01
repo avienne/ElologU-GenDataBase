@@ -16,9 +16,9 @@ import java.sql.SQLException;
  */
 public class csvLoader
 {
-    private static final String SQL_INSERT = "INSERT INTO ${table} VALUES(${values})";
+    private static final String SQL_INSERT = "INSERT INTO ${table}(${keys}) VALUES(${values})";
     private static final String TABLE_REGEX = "\\$\\{table\\}";
-    //private static final String KEYS_REGEX = "\\$\\{keys\\}";
+    private static final String KEYS_REGEX = "\\$\\{keys\\}";
     private static final String VALUES_REGEX = "\\$\\{values\\}";
  
     private Connection connection;
@@ -34,7 +34,7 @@ public class csvLoader
     {
         this.connection = connection;
         //Set default separator
-        this.seprator = ',';
+        this.seprator = ';';
     }
      
     /**
@@ -78,7 +78,7 @@ public class csvLoader
                 .length() - 1);
  
         String query = SQL_INSERT.replaceFirst(TABLE_REGEX, tableName);
-        //query = query.replaceFirst(KEYS_REGEX, StringUtils.join(headerRow, ","));
+        query = query.replaceFirst(KEYS_REGEX, StringUtils.join(headerRow, ","));
         query = query.replaceFirst(VALUES_REGEX, questionmarks);
  
         System.out.println("Query: " + query);
@@ -133,10 +133,8 @@ public class csvLoader
                 ps.close();
                 ps = null;
             }
-            /* je pense que c'est une mauvaise idée de fermer la connexion dans le csvLoader car
-             * ce n'est pas lui qui l'ouvre. On ouvre une connexion, on appelle le csvLoader
-             * et on ferme la connexion après cet appel.
-            */
+            // j'ai commenté ça car c'est pas le csvLoader qui ouvre la connection.
+            // je vois pas pourquoi ce serait lui qui la fermerait...
             /*if(con != null)
             {
               con.close();
