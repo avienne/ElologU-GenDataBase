@@ -20,7 +20,7 @@ public class dbCreator
     private String framework = "derbyclient";
     private String driver = "org.apache.derby.jdbc.ClientDriver";
     private String protocol = "jdbc:derby://localhost:1527/";
-    private String DBname = "EcologU_DB2";
+    private String DBname = "EcologU_DB";
     private ArrayList<String> tables = new ArrayList<String>()
     {
         {
