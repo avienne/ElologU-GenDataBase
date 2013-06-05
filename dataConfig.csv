@@ -1,7 +1,7 @@
 mode;attribut;valeur
-STANDARD;heureDebut;8h00
+STANDARD;heureDebut;08h00
 STANDARD;heureFin;18h00
-STANDARD;notification;both
+STANDARD;notification;email
 STANDARD;sms;
 STANDARD;email;le-gars@la-boite.fr
 HOLIDAY;heureDebut;10h00
@@ -9,7 +9,7 @@ HOLIDAY;heureFin;16h00
 HOLIDAY;notification;email
 HOLIDAY;sms;
 HOLIDAY;email;un-autre-gars@la-boite.fr
-ALERTING;heureDebut;8h00
+ALERTING;heureDebut;08h00
 ALERTING;heureFin;18h00
 ALERTING;notification;both
 ALERTING;sms;0668371432
