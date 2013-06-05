@@ -24,16 +24,6 @@ public class dbCreator
     private String driver = "org.apache.derby.jdbc.ClientDriver";
     private String protocol = "jdbc:derby://localhost:1527/";
     private String DBname = "EcologU_DB";
-    private ArrayList<String> tables = new ArrayList<String>()
-    {
-        {
-            //add("chauffage");
-            add("eclairage");
-            add("eau");
-            add("ventilation");
-            add("electricite");
-        }
-    };
     
     public void setUpDb (){
         this.loadDriver();
@@ -57,50 +47,9 @@ public class dbCreator
         }
         finally
         {
-            for(int i=0; i<tables.size(); i++)
-            {
-                try
-                {
-                    s.execute("CREATE TABLE APP." + (String)this.tables.get(i)
-                        + "(heure char(22) not null primary key,"
-                            + "consommation varchar(10))");
-                    con.commit();
-                }
-                catch(SQLException sqle)
-                {
-                    if(!(sqle.getErrorCode() == -1 && "X0Y32".equals(sqle.getSQLState())))
-                    {
-                        printSQLException(sqle);
-                    }
-                }
-                System.out.println("Création de la table '" +  this.tables.get(i) + "'");
-            }
-
-            try
-                {
-                    s.execute("CREATE TABLE APP.chauffage"
-                                + "(heure char(22) not null,"
-                                + "numCapteur int not null,"    
-                                + "consommation varchar(10),"
-                                + "primary key(heure, numCapteur))");
-                    con.commit();
-                }
-                catch(SQLException sqle)
-                {
-                    if(!(sqle.getErrorCode() == -1 && "X0Y32".equals(sqle.getSQLState())))
-                    {
-                        printSQLException(sqle);
-                    }
-                }
-                System.out.println("Création de la table 'chauffage'");
-                
             try{
-                s.execute("CREATE TABLE APP.configurations "
-                            + "(mode varchar(8) not null,"
-                            + "attribut varchar(15) not null,"
-                            + "valeur varchar(60),"
-                            + "primary key(mode, attribut))");
-                con.commit();
+                ScriptRunner runner = new ScriptRunner(con, false, false);
+                runner.runScript(new BufferedReader(new FileReader("./setDB.sql")));
             }catch(SQLException sqle)
             {
                 if(!(sqle.getErrorCode() == -1 && "X0Y32".equals(sqle.getSQLState())))
@@ -108,29 +57,11 @@ public class dbCreator
                     printSQLException(sqle);
                 }
             }
+            catch(IOException e)    {e.printStackTrace();}
             
             try{
-                s.execute("CREATE TABLE APP.notifications "
-                            + "(id int not null primary key "
-                            + "GENERATED ALWAYS AS IDENTITY"
-                            + "(START WITH 1, INCREMENT BY 1),"
-                            + "gravite varchar(10) not null,"
-                            + "heure char(22) not null,"
-                            + "action varchar(20) not null,"
-                            + "equipement varchar(100) not null,"
-                            + "type varchar(50) not null)");
-                con.commit();
-            }catch(SQLException sqle)
-            {
-                if(!(sqle.getErrorCode() == -1 && "X0Y32".equals(sqle.getSQLState())))
-                {
-                    printSQLException(sqle);
-                }
-            }
-            
-            try{
-                ScriptRunner runner = new ScriptRunner(con, false, true);
-                runner.runScript(new BufferedReader(new FileReader("/setSecurityTable.sql")));
+                ScriptRunner runner = new ScriptRunner(con, false, false);
+                runner.runScript(new BufferedReader(new FileReader("./setSecurityTable.sql")));
             }catch(SQLException sqle)
             {
                 if(!(sqle.getErrorCode() == -1 && "X0Y32".equals(sqle.getSQLState())))
