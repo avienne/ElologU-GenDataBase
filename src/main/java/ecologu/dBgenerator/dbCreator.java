@@ -114,7 +114,8 @@ public class dbCreator
                             + "gravite varchar(10) not null,"
                             + "heure char(22) not null,"
                             + "action varchar(20) not null,"
-                            + "equipement varchar(100) not null)");
+                            + "equipement varchar(100) not null,"
+                            + "type varchar(50) not null)");
                 con.commit();
             }catch(SQLException sqle)
             {
