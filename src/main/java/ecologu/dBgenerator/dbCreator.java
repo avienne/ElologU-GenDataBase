@@ -24,10 +24,10 @@ public class dbCreator
     private ArrayList<String> tables = new ArrayList<String>()
     {
         {
-            add("chauffage");
+            //add("chauffage");
             add("eclairage");
             add("eau");
-            add("ventillation");
+            add("ventilation");
             add("electricite");
         }
     };
@@ -59,8 +59,8 @@ public class dbCreator
                 try
                 {
                     s.execute("CREATE TABLE APP." + (String)this.tables.get(i)
-                        + "(heure char(40) not null primary key,"
-                            + "consommation char(10))");
+                        + "(heure char(22) not null primary key,"
+                            + "consommation varchar(10))");
                     con.commit();
                 }
                 catch(SQLException sqle)
@@ -73,6 +73,24 @@ public class dbCreator
                 System.out.println("Création de la table '" +  this.tables.get(i) + "'");
             }
 
+            try
+                {
+                    s.execute("CREATE TABLE APP.chauffage"
+                                + "(heure char(22) not null,"
+                                + "numCapteur int not null,"    
+                                + "consommation varchar(10),"
+                                + "primary key(heure, numCapteur))");
+                    con.commit();
+                }
+                catch(SQLException sqle)
+                {
+                    if(!(sqle.getErrorCode() == -1 && "X0Y32".equals(sqle.getSQLState())))
+                    {
+                        printSQLException(sqle);
+                    }
+                }
+                System.out.println("Création de la table 'chauffage'");
+                
             try{
                 s.execute("CREATE TABLE APP.configurations "
                             + "(mode varchar(8) not null,"
