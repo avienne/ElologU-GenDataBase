@@ -1,5 +1,8 @@
 package ecologu.dBgenerator;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -124,6 +127,18 @@ public class dbCreator
                     printSQLException(sqle);
                 }
             }
+            
+            try{
+                ScriptRunner runner = new ScriptRunner(con, false, true);
+                runner.runScript(new BufferedReader(new FileReader("/setSecurityTable.sql")));
+            }catch(SQLException sqle)
+            {
+                if(!(sqle.getErrorCode() == -1 && "X0Y32".equals(sqle.getSQLState())))
+                {
+                    printSQLException(sqle);
+                }
+            }
+            catch(IOException e)    {e.printStackTrace();}
             
             csvLoader loader = new csvLoader(con);
             // Ajouter ICI le code pour peupler la base de consommation d'électricité 
