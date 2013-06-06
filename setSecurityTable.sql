@@ -36,7 +36,9 @@ CREATE INDEX SQL_PERSONGROUPS_ID_INDEX ON APP.PERSON_GROUPS(GROUPS_ID);
 
 
 INSERT INTO APP.PERSON(FIRSTNAME, LASTNAME, LOGIN, EMAIL, PASSWORD, DTYPE)
-VALUES('root', 'root', 'root', 'root@ecologu.com', '63a9f0ea7bb98050796b649e85481845', 'Administrator');
+VALUES('root', 'root', 'root', 'root@ecologu.com', 'root', 'Administrator');
+INSERT INTO APP.PERSON(FIRSTNAME, LASTNAME, LOGIN, EMAIL, PASSWORD, DTYPE)
+VALUES('admin', 'admin', 'admin', 'admin@ecologu.com', '', 'Administrator');
 
 INSERT INTO APP.GROUPS(GROUPNAME, DESCRIPTION)
 VALUES ('USERS', 'Users of the application');
@@ -45,3 +47,5 @@ VALUES ('ADMINS', 'Administrators of the application');
 
 INSERT INTO APP.PERSON_GROUPS (GROUPS_ID, LOGIN) 
 VALUES (2,'root');
+INSERT INTO APP.PERSON_GROUPS (GROUPS_ID, LOGIN) 
+VALUES (2,'admin');
