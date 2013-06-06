@@ -20,10 +20,11 @@ CREATE TABLE APP.electricite
 );
 CREATE TABLE APP.chauffage
 (
-    heure CHAR(22) NOT NULL,
+    jour DATE NOT NULL,
+    heure TIME NOT NULL,
     numCapteur INT NOT NULL,    
     consommation FLOAT,
-    PRIMARY KEY(heure, numCapteur)
+    PRIMARY KEY(jour, heure, numCapteur)
 );
 CREATE TABLE APP.configurations 
 (
