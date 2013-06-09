@@ -15,7 +15,7 @@ import java.util.Properties;
 
 /**
  *
- * @author Alex
+ * @author Alex & Hugo
  */
 
 public class dbCreator 
@@ -86,10 +86,11 @@ public class dbCreator
             }
             // Remplissage de la table chauffage
             try{
-                loader.loadCSV("./dataChauffage.csv", "CHAUFFAGE", true);
-            }catch (Exception e){
-                e.printStackTrace();
+                ScriptRunner runner = new ScriptRunner(con, false, false);
+                runner.runScript(new BufferedReader(new FileReader("./fillChauffage.sql")));
             }
+            catch(SQLException sqle)   {printSQLException(sqle);}
+            catch(IOException e)    {e.printStackTrace();}
             // Remplissage de la table notifications
             try{
                 loader.loadCSV("./dataNotif.csv", "NOTIFICATIONS", true);
@@ -97,23 +98,16 @@ public class dbCreator
                 e.printStackTrace();
             }
             
-            // Décommenter pour afficher le contenu des tables ELECTRICITE et CONFIGURATIONS
-            /*
+            
             try
             {
-                ResultSet rs = s.executeQuery("SELECT * FROM APP.ELECTRICITE");
+                ResultSet rs = s.executeQuery("SELECT TABLENAME FROM SYS.SYSTABLES WHERE TABLENAME NOT LIKE 'SYS%'");
                 while(rs.next())
                 {
-                    System.out.println("[ "+rs.getString("heure")+", "
-                            + rs.getString("consommation") + " ]");
+                    System.out.println("Table "+rs.getString("TABLENAME")
+                            + " créée avec succès");
                 }
-                rs = s.executeQuery("SELECT * FROM APP.CONFIGURATIONS");
-                while(rs.next())
-                {
-                    System.out.println("[ "+rs.getString("mode")+", "
-                            + rs.getString("attribut") + ", "
-                            + rs.getString("valeur") + " ]");
-                }
+                con.commit();
                 if(rs != null)
                 {
                     rs.close();
@@ -121,7 +115,34 @@ public class dbCreator
                 }
             }
             catch(SQLException sqle) {printSQLException(sqle);}
-            */
+            // Décommenter pour afficher le contenu des tables ELECTRICITE et CONFIGURATIONS
+            try
+            {
+                System.out.println("Le système est pré-configuré avec les"
+                        + " configurations suivantes:");
+                ResultSet rs = s.executeQuery("SELECT * FROM APP.CONFIGURATIONS");
+                while(rs.next())
+                {
+                    System.out.println("[ "+rs.getString("mode")+", "
+                            + rs.getString("attribut") + ", "
+                            + rs.getString("valeur") + " ]");
+                }
+                con.commit();
+                /*rs = s.executeQuery("SELECT * FROM APP.ELECTRICITE");
+                while(rs.next())
+                {
+                    System.out.println("[ "+rs.getString("heure")+", "
+                            + rs.getString("consommation") + " ]");
+                }
+                con.commit();*/
+                if(rs != null)
+                {
+                    rs.close();
+                    rs = null;
+                }
+            }
+            catch(SQLException sqle) {printSQLException(sqle);}
+            
             try
             {
                 if(s != null)

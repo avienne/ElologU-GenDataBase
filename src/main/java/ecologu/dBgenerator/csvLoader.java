@@ -1,6 +1,5 @@
 package ecologu.dBgenerator;
 
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.sql.Connection;
@@ -81,7 +80,7 @@ public class csvLoader
         query = query.replaceFirst(KEYS_REGEX, StringUtils.join(headerRow, ","));
         query = query.replaceFirst(VALUES_REGEX, questionmarks);
  
-        System.out.println("Query: " + query);
+        //System.out.println("Query: " + query);
  
         String[] nextLine;
         Connection con = null;
