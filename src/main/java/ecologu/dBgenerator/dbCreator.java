@@ -5,13 +5,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Properties;
-
 
 /**
  *
@@ -93,11 +90,16 @@ public class dbCreator
             catch(IOException e)    {e.printStackTrace();}
             // Remplissage de la table notifications
             try{
+                ScriptRunner runner = new ScriptRunner(con, false, false);
+                runner.runScript(new BufferedReader(new FileReader("./fillNotif.sql")));
+            }
+            catch(SQLException sqle)   {printSQLException(sqle);}
+            catch(IOException e)    {e.printStackTrace();}
+            /*try{
                 loader.loadCSV("./dataNotif.csv", "NOTIFICATIONS", true);
             }catch (Exception e){
                 e.printStackTrace();
-            }
-            
+            }*/
             
             try
             {

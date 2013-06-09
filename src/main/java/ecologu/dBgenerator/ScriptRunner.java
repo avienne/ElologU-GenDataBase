@@ -147,7 +147,7 @@ public class ScriptRunner {
                         command.append(" ");
                         Statement statement = conn.createStatement();
 
-                        //println(command);
+                        println(command);
 
                         boolean hasResults = false;
                         if (stopOnError) {
