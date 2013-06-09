@@ -1,5 +1,31 @@
-gravite;heure;action;equipement
-INFO;samedi 1 juin 2013 14:00;allumage lampes; lampes salle Vitrine
-INFO;samedi 1 juin 2013 15:50; extinction lampe; lampes amphi Chappe
-WARNING;lundi 3 juin 2013 09:36;baisse chauffage;température ambiante salle TD A
-SEVERE;lundi 3 juin 2013 15:01;coupure chauffage;fenetre ouverte salle Projet B
+gravite;heure;action;equipement;type
+INFO;2013-06-09 18:20:29;Chauffage OFF;5;Chauffage
+INFO;2013-06-09 18:20:39;Chauffage ON;5;Chauffage
+INFO;2013-06-09 18:20:40;Chauffage OFF;5;Chauffage
+INFO;2013-06-09 18:20:46;Chauffage ON;5;Chauffage
+INFO;2013-06-09 18:20:51;Chauffage OFF;5;Chauffage
+INFO;2013-06-09 18:20:55;Chauffage ON;5;Chauffage
+SEVERE;2013-06-09 18:28:06;capteur débranché;5;Erreur Système
+SEVERE;2013-06-09 18:28:11;capteur débranché;5;Erreur Système
+SEVERE;2013-06-09 18:28:16;capteur débranché;5;Erreur Système
+SEVERE;2013-06-09 18:28:21;capteur débranché;5;Erreur Système
+SEVERE;2013-06-09 18:28:26;capteur débranché;5;Erreur Système
+SEVERE;2013-06-09 18:29:16;capteur débranché;5;Erreur Système
+SEVERE;2013-06-09 18:29:21;capteur débranché;5;Erreur Système
+SEVERE;2013-06-09 18:29:26;capteur débranché;5;Erreur Système
+SEVERE;2013-06-09 18:29:31;capteur débranché;5;Erreur Système
+SEVERE;2013-06-09 18:29:37;capteur débranché;5;Erreur Système
+SEVERE;2013-06-09 18:29:42;capteur débranché;5;Erreur Système
+SEVERE;2013-06-09 18:29:46;capteur débranché;5;Erreur Système
+SEVERE;2013-06-09 18:29:51;capteur débranché;5;Erreur Système
+SEVERE;2013-06-09 18:29:56;capteur débranché;5;Erreur Système
+SEVERE;2013-06-09 18:30:01;capteur débranché;5;Erreur Système
+SEVERE;2013-06-09 18:30:06;capteur débranché;5;Erreur Système
+SEVERE;2013-06-09 18:33:02;capteur débranché;5;Erreur Système
+RECOVERY;2013-06-09 18:34:47;capteur rebranché;5;Système OK
+SEVERE;2013-06-09 18:35:02;capteur débranché;5;Erreur Système
+RECOVERY;2013-06-09 18:35:11;capteur rebranché;5;Système OK
+INFO;2013-06-09 18:36:57;Sytème OFF;5;OFF by User
+INFO;2013-06-09 18:36:57;Sytème ON;5;ON by User
+INFO;2013-06-09 18:36:58;Sytème OFF;5;OFF by User
+INFO;2013-06-09 18:36:59;Sytème ON;5;ON by User

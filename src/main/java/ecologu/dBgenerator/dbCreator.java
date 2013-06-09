@@ -74,7 +74,6 @@ public class dbCreator
             csvLoader loader = new csvLoader(con);
             // Ajouter ICI le code pour peupler la base de consommation d'électricité 
             try{
-                
                 loader.loadCSV("./dataelec.csv", "ELECTRICITE", true);
             }catch (Exception e){
                 e.printStackTrace();
@@ -82,6 +81,18 @@ public class dbCreator
             // Remplissage de la table configurations
             try{
                 loader.loadCSV("./dataConfig.csv", "CONFIGURATIONS", true);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            // Remplissage de la table chauffage
+            try{
+                loader.loadCSV("./dataChauffage.csv", "CHAUFFAGE", true);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            // Remplissage de la table notifications
+            try{
+                loader.loadCSV("./dataNotif.csv", "NOTIFICATIONS", true);
             }catch (Exception e){
                 e.printStackTrace();
             }
