@@ -3,14 +3,14 @@ STANDARD;heureDebut;08h00
 STANDARD;heureFin;18h00
 STANDARD;notification;email
 STANDARD;sms;
-STANDARD;email;le-gars@la-boite.fr
+STANDARD;email;monsieur@la-boite.fr
 HOLIDAY;heureDebut;10h00
 HOLIDAY;heureFin;16h00
 HOLIDAY;notification;email
 HOLIDAY;sms;
-HOLIDAY;email;un-autre-gars@la-boite.fr
+HOLIDAY;email;un-autre-monsieur@la-boite.fr
 ALERTING;heureDebut;08h00
 ALERTING;heureFin;18h00
 ALERTING;notification;both
 ALERTING;sms;0668371432
-ALERTING;email;le-gars-a-eduquer-a-donf@la-boite.fr
+ALERTING;email;encore-un-monsieur@la-boite.fr

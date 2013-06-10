@@ -69,37 +69,29 @@ public class dbCreator
             catch(IOException e)    {e.printStackTrace();}
             
             csvLoader loader = new csvLoader(con);
-            // Ajouter ICI le code pour peupler la base de consommation d'électricité 
+            // Remplissage de quelques tables
             try{
                 loader.loadCSV("./dataelec.csv", "ELECTRICITE", true);
             }catch (Exception e){
                 e.printStackTrace();
             }
-            // Remplissage de la table configurations
             try{
                 loader.loadCSV("./dataConfig.csv", "CONFIGURATIONS", true);
             }catch (Exception e){
                 e.printStackTrace();
             }
-            // Remplissage de la table chauffage
             try{
                 ScriptRunner runner = new ScriptRunner(con, false, false);
                 runner.runScript(new BufferedReader(new FileReader("./fillChauffage.sql")));
             }
             catch(SQLException sqle)   {printSQLException(sqle);}
             catch(IOException e)    {e.printStackTrace();}
-            // Remplissage de la table notifications
             try{
                 ScriptRunner runner = new ScriptRunner(con, false, false);
                 runner.runScript(new BufferedReader(new FileReader("./fillNotif.sql")));
             }
             catch(SQLException sqle)   {printSQLException(sqle);}
             catch(IOException e)    {e.printStackTrace();}
-            /*try{
-                loader.loadCSV("./dataNotif.csv", "NOTIFICATIONS", true);
-            }catch (Exception e){
-                e.printStackTrace();
-            }*/
             
             try
             {
