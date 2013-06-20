@@ -105,7 +105,14 @@ public class dbCreator
                 }
                 catch(SQLException sqle)   {printSQLException(sqle);}
                 catch(IOException e)    {e.printStackTrace();}
-            
+                
+                try{
+                    ScriptRunner runner = new ScriptRunner(con, false, false);
+                    runner.runScript(new BufferedReader(new FileReader("./setMode.sql")));
+                }
+                catch(SQLException sqle)   {printSQLException(sqle);}
+                catch(IOException e)    {e.printStackTrace();}
+                
                 try
                 {
                     ResultSet rs = s.executeQuery("SELECT TABLENAME FROM SYS.SYSTABLES WHERE TABLENAME NOT LIKE 'SYS%'");
@@ -135,13 +142,6 @@ public class dbCreator
                                 + rs.getString("valeur") + " ]");
                     }
                     con.commit();
-                    /*rs = s.executeQuery("SELECT * FROM APP.ELECTRICITE");
-                    while(rs.next())
-                    {
-                        System.out.println("[ "+rs.getString("heure")+", "
-                                + rs.getString("consommation") + " ]");
-                    }
-                    con.commit();*/
                     if(rs != null)
                     {
                         rs.close();
